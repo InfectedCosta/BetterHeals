@@ -94,11 +94,12 @@ local function GetGroupHealthSnapshot()
     end
 
     return {
-        members = math.max(#members, 1),
-        lowCount = lowCount,
-        totalMissing = totalMissing,
-        averageMissing = totalMissing / math.max(#members, 1),
-        injured = injured,
+        members = memberCount,
+        lowCount = 0,
+        totalMissing = 0,
+        averageMissing = 0,
+        injured = 0,
+        healthDataAvailable = false,
     }
 end
 
