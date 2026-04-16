@@ -1,4 +1,4 @@
-## Interface: 110200
+## Interface: 120001
 ## Title: BetterHeals
 ## Notes: Restoration Druid healing companion with contextual spell suggestions.
 ## Author: BetterHeals Team
