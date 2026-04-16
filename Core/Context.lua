@@ -123,24 +123,14 @@ function Context:BuildState()
     local snapshot = GetGroupHealthSnapshot()
     local lifebloomName = GetSafeSpellName(SPELLS.LIFEBLOOM)
     local rejuvenationName = GetSafeSpellName(SPELLS.REJUVENATION)
-    local hasLifebloom = false
-    local hasRejuv = false
-
-    if lifebloomName then
-        hasLifebloom = AuraUtil.FindAuraByName(lifebloomName, "target", "HELPFUL") ~= nil
-    end
-
-    if rejuvenationName then
-        hasRejuv = AuraUtil.FindAuraByName(rejuvenationName, "target", "HELPFUL") ~= nil
-    end
 
     return {
         mode = self:GetContentMode(),
         inCombat = UnitAffectingCombat("player"),
         mana = UnitPower("player", Enum.PowerType.Mana),
         maxMana = UnitPowerMax("player", Enum.PowerType.Mana),
-        hasLifebloom = hasLifebloom,
-        hasRejuv = hasRejuv,
+        hasLifebloom = lifebloomName and AuraUtil.FindAuraByName(lifebloomName, "target", "HELPFUL") ~= nil or false,
+        hasRejuv = rejuvenationName and AuraUtil.FindAuraByName(rejuvenationName, "target", "HELPFUL") ~= nil or false,
         health = snapshot,
     }
 end

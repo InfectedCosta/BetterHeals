@@ -38,15 +38,7 @@ local function IsCastable(spellID)
     local cooldownInfo = C_Spell.GetSpellCooldown(spellID)
     local startTime = cooldownInfo and cooldownInfo.startTime or 0
     local duration = cooldownInfo and cooldownInfo.duration or 0
-    local isEnabled = cooldownInfo and cooldownInfo.isEnabled
-
-    if isEnabled == nil then
-        isEnabled = true
-    else
-        isEnabled = isEnabled ~= 0
-    end
-
-    local onCooldown = isEnabled and startTime > 0 and duration > 0 and (startTime + duration - GetTime()) > 0
+    local onCooldown = startTime > 0 and duration > 0 and (startTime + duration - GetTime()) > 0
     return usable and not noMana and not onCooldown
 end
 
@@ -54,8 +46,8 @@ local function Recommendation(spellID, reason, tag)
     local spellInfo = GetSafeSpellInfo(spellID)
     return {
         spellID = spellID,
-        icon = spellInfo and spellInfo.iconID or 134400,
-        name = GetSafeSpellName(spellID) or "Unknown",
+        icon = spellInfo and spellInfo.iconID,
+        name = GetSafeSpellName(spellID),
         reason = reason,
         tag = tag,
     }
