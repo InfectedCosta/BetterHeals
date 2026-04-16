@@ -8,14 +8,18 @@ local MODE_OPEN_WORLD = "OPEN_WORLD"
 local MODE_RAID = "RAID"
 local MODE_MYTHIC_PLUS = "MYTHIC_PLUS"
 
+local function AsNumber(value)
+    return tonumber(value) or 0
+end
+
 local function GetGroupHealthSnapshot()
     local members = {}
     local totalMissing = 0
 
     local count = IsInRaid() and GetNumGroupMembers() or GetNumSubgroupMembers()
     if count == 0 then
-        local maxHealth = UnitHealthMax("player")
-        local currentHealth = UnitHealth("player")
+        local maxHealth = AsNumber(UnitHealthMax("player"))
+        local currentHealth = AsNumber(UnitHealth("player"))
         local missing = maxHealth - currentHealth
         return {
             members = 1,
@@ -32,8 +36,8 @@ local function GetGroupHealthSnapshot()
     for i = 1, count do
         local unit = IsInRaid() and ("raid" .. i) or ("party" .. i)
         if UnitExists(unit) and not UnitIsDeadOrGhost(unit) then
-            local maxHealth = UnitHealthMax(unit)
-            local currentHealth = UnitHealth(unit)
+            local maxHealth = AsNumber(UnitHealthMax(unit))
+            local currentHealth = AsNumber(UnitHealth(unit))
             local missing = maxHealth - currentHealth
             local hpPercent = currentHealth / math.max(maxHealth, 1)
 
