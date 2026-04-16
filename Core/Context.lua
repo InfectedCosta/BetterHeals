@@ -7,6 +7,18 @@ local Context = BetterHeals.Context
 local MODE_OPEN_WORLD = "OPEN_WORLD"
 local MODE_RAID = "RAID"
 local MODE_MYTHIC_PLUS = "MYTHIC_PLUS"
+local SPELLS = {
+    REJUVENATION = 774,
+    LIFEBLOOM = 33763,
+}
+
+local function GetSafeSpellName(spellID)
+    if not spellID then
+        return nil
+    end
+
+    return C_Spell.GetSpellName(spellID)
+end
 
 local function IsSafeNumber(value)
     return pcall(function()
@@ -111,14 +123,16 @@ end
 
 function Context:BuildState()
     local snapshot = GetGroupHealthSnapshot()
+    local lifebloomName = GetSafeSpellName(SPELLS.LIFEBLOOM)
+    local rejuvenationName = GetSafeSpellName(SPELLS.REJUVENATION)
 
     return {
         mode = self:GetContentMode(),
         inCombat = UnitAffectingCombat("player"),
         mana = UnitPower("player", Enum.PowerType.Mana),
         maxMana = UnitPowerMax("player", Enum.PowerType.Mana),
-        hasLifebloom = AuraUtil.FindAuraByName(GetSpellInfo(33763), "target", "HELPFUL") ~= nil,
-        hasRejuv = AuraUtil.FindAuraByName(GetSpellInfo(774), "target", "HELPFUL") ~= nil,
+        hasLifebloom = lifebloomName and AuraUtil.FindAuraByName(lifebloomName, "target", "HELPFUL") ~= nil or false,
+        hasRejuv = rejuvenationName and AuraUtil.FindAuraByName(rejuvenationName, "target", "HELPFUL") ~= nil or false,
         health = snapshot,
     }
 end
