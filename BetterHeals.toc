@@ -1,0 +1,12 @@
+## Interface: 110200
+## Title: BetterHeals
+## Notes: Restoration Druid healing companion with contextual spell suggestions.
+## Author: BetterHeals Team
+## Version: 0.1.0
+## SavedVariables: BetterHealsDB
+
+Config/Defaults.lua
+Core/Context.lua
+Core/Rotation.lua
+UI/Display.lua
+BetterHeals.lua
