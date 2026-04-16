@@ -37,6 +37,10 @@ local function CreateIcon(parent, index, size)
 end
 
 function UI:CreateMainFrame()
+    if frame then
+        return frame
+    end
+
     frame = CreateFrame("Frame", "BetterHealsMainFrame", UIParent, "BackdropTemplate")
     frame:SetSize(240, 100)
     frame:SetMovable(true)
@@ -70,6 +74,7 @@ function UI:CreateMainFrame()
     frame.modeLabel:SetPoint("BOTTOM", frame, "BOTTOM", 0, 2)
 
     frame:Show()
+    return frame
 end
 
 function UI:Update(recommendations, state)
