@@ -21,9 +21,7 @@ local function GetSafeSpellName(spellID)
 end
 
 local function IsSafeNumber(value)
-    return pcall(function()
-        return (value + 0) >= 0
-    end)
+    return type(value) == "number"
 end
 
 local function SafeUnitHealth(unit)
@@ -109,12 +107,12 @@ function Context:GetContentMode()
         return BetterHeals.db.profile.mode.forced
     end
 
-    local _, instanceType, difficultyID = GetInstanceInfo()
+    local _, instanceType = GetInstanceInfo()
     if instanceType == "raid" then
         return MODE_RAID
     end
 
-    if instanceType == "party" and difficultyID == 8 then
+    if C_ChallengeMode and C_ChallengeMode.IsChallengeModeActive and C_ChallengeMode.IsChallengeModeActive() then
         return MODE_MYTHIC_PLUS
     end
 
