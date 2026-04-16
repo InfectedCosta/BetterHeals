@@ -17,18 +17,37 @@ local SPELLS = {
     IRONBARK = 102342,
 }
 
+local function GetSafeSpellInfo(spellID)
+    if not spellID then
+        return nil
+    end
+
+    return C_Spell.GetSpellInfo(spellID)
+end
+
+local function GetSafeSpellName(spellID)
+    if not spellID then
+        return nil
+    end
+
+    return C_Spell.GetSpellName(spellID)
+end
+
 local function IsCastable(spellID)
-    local usable, noMana = IsUsableSpell(spellID)
-    local start, duration = C_Spell.GetSpellCooldown(spellID)
-    local onCooldown = start > 0 and duration > 0 and (start + duration - GetTime()) > 0
+    local usable, noMana = C_Spell.IsSpellUsable(spellID)
+    local cooldownInfo = C_Spell.GetSpellCooldown(spellID)
+    local startTime = cooldownInfo and cooldownInfo.startTime or 0
+    local duration = cooldownInfo and cooldownInfo.duration or 0
+    local onCooldown = startTime > 0 and duration > 0 and (startTime + duration - GetTime()) > 0
     return usable and not noMana and not onCooldown
 end
 
 local function Recommendation(spellID, reason, tag)
+    local spellInfo = GetSafeSpellInfo(spellID)
     return {
         spellID = spellID,
-        icon = C_Spell.GetSpellTexture(spellID),
-        name = C_Spell.GetSpellName(spellID),
+        icon = spellInfo and spellInfo.iconID,
+        name = GetSafeSpellName(spellID),
         reason = reason,
         tag = tag,
     }

@@ -71,8 +71,13 @@ SLASH_BETTERHEALS1 = "/betterheals"
 SLASH_BETTERHEALS2 = "/bh"
 SlashCmdList.BETTERHEALS = HandleSlashCommand
 
-BetterHeals.frame:SetScript("OnEvent", function(_, event)
+BetterHeals.frame:SetScript("OnEvent", function(_, event, ...)
     if event == "ADDON_LOADED" then
+        local loadedAddonName = ...
+        if loadedAddonName ~= addonName then
+            return
+        end
+
         BetterHeals:InitializeDatabase()
         BetterHeals.UI:CreateMainFrame()
         RefreshRecommendations()
